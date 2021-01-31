@@ -15,7 +15,7 @@ class Board:
         and -1 if an error has occurred.
         """
         # Make list of rows, cols, diags to check
-        board_copy = copy.copy(self.board)
+        board_copy = copy.deepcopy(self.board)
         to_check = board_copy[:]
         for col in range(3):
             to_check.append([board_copy[r][col] for r in range(3)])
@@ -72,12 +72,39 @@ class Board:
         """
         self.board[(pos - 1) // 3][(pos - 1) % 3] = val
 
-if __name__ == '__main__':
+def two_player():
     b = Board()
-    #print(b.get_result())
-    #print(b.get_moves())
+    print('Welcome to tic tac toe!\nTo make a move, enter the number of the square which you would like to play, labelled as:\n1, 2, 3\n4, 5, 6\n7, 8, 9')
+
+    current = 1
     b.print_board()
-    b.move(2, 'X')
-    b.print_board()
-    b.move(9, 'O')
-    b.print_board()
+    
+    while b.get_moves():
+        move = input('Player ' + str(current) + ', enter a square: ')
+        try:
+            move = int(move)
+        except:
+            ValueError('Move not understood')
+        while move not in b.get_moves():
+            print('Move not allowed.')
+            move = input('Try again: ')
+            try:
+                move = int(move)
+            except:
+                ValueError('Move not understood')
+        b.move(move, ['X','O'][current-1])
+        current = [2,1][current-1]
+        b.print_board()
+        state = b.get_result()
+        if state == 1:
+            print('Player 1 wins')
+            break
+        elif state == 2:
+            print('Player 2 wins')
+            break
+
+    if (not b.get_moves()) and (b.get_result() == 0):
+        print('Draw!')
+        
+if __name__ == '__main__':
+    two_player()
