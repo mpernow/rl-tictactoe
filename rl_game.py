@@ -10,7 +10,7 @@ class Game:
         self.player2_wins = 0
         self.draws = 0
 
-    def play_game(self):
+    def play_one(self):
         """
         Plays a game between player 1 and player 2
         """
@@ -42,4 +42,9 @@ class Game:
         self.player1.reset_history()
         self.player2.reset_history()
                 
-            
+    def play_many(self, number):
+        """
+        Calls play_one() several times.
+        """
+        # To be implemented
+        return 0

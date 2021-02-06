@@ -1,16 +1,15 @@
 class Player:
-    def __init__(self, value, strategy):
-        self.value = value
+    def __init__(self, strategy):
         self.strategy = strategy
 
-    def get_value(self):
-        return self.value
-
+    def set_symbol(self, symbol):
+        self.symbol = symbol
+        
     def move(self, moves, board):
-        return self.strategy.select_move(moves, board, self.value)
-# The below will be useful only for q-learning
-#    def reward(self, reward_value):
-#        self.strategy.reward(reward_value)
-#
-#    def reset_history(self):
-#        self.strategy.reset_history()
+        return self.strategy.select_move(moves, board)
+
+    def reward(self, reward_value):
+        self.strategy.reward(reward_value)
+
+    def reset_history(self):
+        self.strategy.reset_history()
