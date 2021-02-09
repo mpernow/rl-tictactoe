@@ -1,10 +1,8 @@
 class Player:
-    def __init__(self, strategy):
+    def __init__(self, symbol, strategy):
+        self.symbol = symbol
         self.strategy = strategy
 
-    def set_symbol(self, symbol):
-        self.symbol = symbol
-        
     def move(self, moves, board):
         return self.strategy.select_move(moves, board)
 

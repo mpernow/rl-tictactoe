@@ -79,7 +79,7 @@ def two_player():
     current = 1
     b.print_board()
     
-    while b.get_moves():
+    while (b.get_moves()) and (b.get_result() == 0):
         move = input('Player ' + str(current) + ', enter a square: ')
         try:
             move = int(move)
