@@ -75,7 +75,7 @@ class Board:
 def two_player():
     b = Board()
     print('Welcome to tic tac toe!\nTo make a move, enter the number of the square which you would like to play, labelled as:\n1, 2, 3\n4, 5, 6\n7, 8, 9')
-
+    
     current = 1
     b.print_board()
     
