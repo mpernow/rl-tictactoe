@@ -37,24 +37,41 @@ def human_v_random(human_player=1):
     game = rl_game.Game(p1, p2, board)
     game.play_one()
 
+def q_v_q():
+    """
+    Plays two Q-strategy players against each other
+    """
+    p1_strategy = strategies.QStrategy('q1.pkl')
+    p2_strategy = strategies.QStrategy('q2.pkl')
+    p1 = player.Player('X', p1_strategy)
+    p2 = player.Player('O', p2_strategy)
+    board = tictactoe.Board()
+    game = rl_game.Game(p1, p2, board)
+    game.play_one()
+    p1.strategy.save_q()
+    p2.strategy.save_q()
+
 if __name__ == '__main__':
     print('Welcome to tic tac toe!\n')
     print('These are your options: \n')
-    print('1: View a random vs. random game\n')
-    print('2: Play a 2-player game\n')
-    print('3: Play against random bot as player 1\n')
-    print('4: Play against a random bot as player 2\n')
+    print('1: View a Q vs. Q game\n')
+    print('2: View a random vs. random game\n')
+    print('3: Play a 2-player game\n')
+    print('4: Play against random bot as player 1\n')
+    print('5: Play against a random bot as player 2\n')
     choice = input('Enter your choice: ')
     if not choice.isdigit():
         print('Enter a number next time')
     choice = int(choice)
     if choice == 1:
-        random_v_random()
+        q_v_q()
     elif choice == 2:
-        tictactoe.two_player()
+        random_v_random()
     elif choice == 3:
-        human_v_random(1)
+        tictactoe.two_player()
     elif choice == 4:
+        human_v_random(1)
+    elif choice == 5:
         human_v_random(2)
     else:
         print('Enter a valid choice next time')

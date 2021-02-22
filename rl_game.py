@@ -1,4 +1,5 @@
 import copy
+import time
 from params import win_reward, lose_reward, draw_reward
 
 class Game:
@@ -18,12 +19,14 @@ class Game:
         current_player = self.player1
         while (self.board.get_moves()) and (self.board.get_result() == 0):
             # There are available moves to be made
+            # print(self.board.get_state())
             if (current_player == self.player1):
                 print('Player 1')
             else:
                 print('Player 2')
             moves = self.board.get_moves()
-            selected_move = current_player.move(moves, copy.deepcopy(self.board.board))
+            selected_move = current_player.move(moves, self.board)
+            time.sleep(0.5)
             self.board.move(selected_move, current_player.symbol)
 
             self.board.print_board()

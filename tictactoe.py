@@ -45,6 +45,17 @@ class Board:
                 moves.append(i)
         return moves
 
+    def get_state(self):
+        """
+        Outputs state as a string
+        """
+        ch = lambda x: ' ' if x == 0 else x
+        s = ''
+        for i in range(3):
+            for j in range(3):
+                s += ch(self.board[i][j])
+        return s
+        
     def print_board(self):
         """
         Prints the board
