@@ -144,7 +144,8 @@ class QStrategy(Strategy):
                 next_q = 0.
             self.q[state][action] = (1. - params.learning_rate)*old_q + \
               params.learning_rate * (reward_val + params.discount_factor * next_q)
-        self.q['n'] = self.n + 1
+        self.n += 1
+        self.q['n'] = self.n
 
     def reset_history(self):
         self.history = {}

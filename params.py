@@ -9,6 +9,6 @@ discount_factor = 0.8
 #exploration_rate = 0.1
 eps_min = 0.01
 eps_max = 1.
-tau = 0.1 # quite slow, since large state space
+tau = 0.001 # quite slow, since large state space
 
 f_name = 'q.pkl'

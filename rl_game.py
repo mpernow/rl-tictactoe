@@ -12,7 +12,7 @@ class Game:
         self.player2_wins = 0
         self.draws = 0
 
-    def play_one(self):
+    def play_one(self, display=True):
         """
         Plays a game between player 1 and player 2
         """
@@ -20,16 +20,18 @@ class Game:
         while (self.board.get_moves()) and (self.board.get_result() == 0):
             # There are available moves to be made
             # print(self.board.get_state())
-            if (current_player == self.player1):
-                print('Player 1')
-            else:
-                print('Player 2')
+            if display:
+                if (current_player == self.player1):
+                    print('Player 1')
+                else:
+                    print('Player 2')
             moves = self.board.get_moves()
             selected_move = current_player.move(moves, self.board)
-            time.sleep(0.5)
-            self.board.move(selected_move, current_player.symbol)
 
-            self.board.print_board()
+            self.board.move(selected_move, current_player.symbol)
+            if display:
+                time.sleep(0.5)
+                self.board.print_board()
             
             if current_player == self.player1:
                 current_player = self.player2
@@ -40,22 +42,26 @@ class Game:
         if result == 1:
             self.player1.reward(win_reward)
             self.player2.reward(lose_reward)
-            print('Player 1 wins')
+            if display:
+                print('Player 1 wins')
         elif result == 2:
             self.player2.reward(win_reward)
             self.player1.reward(lose_reward)
-            print('Player 2 wins')
+            if display:
+                print('Player 2 wins')
         else:
             self.player1.reward(draw_reward)
             self.player2.reward(draw_reward)
-            print('Draw')
-
-        self.player1.reset_history()
-        self.player2.reset_history()
+            if display:
+                print('Draw')
                 
     def play_many(self, number):
         """
         Calls play_one() several times.
         """
-        # To be implemented
-        return 0
+        for i in range(number):
+            self.play_one(display=False)
+            self.board.reset_board()
+        self.player1.reset_history()
+        self.player2.reset_history()
+

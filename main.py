@@ -51,6 +51,21 @@ def q_v_q():
     p1.strategy.save_q()
     p2.strategy.save_q()
 
+def train_q():
+    """
+    Trains the RL agent
+    """
+    p1_strategy = strategies.QStrategy('q1.pkl')
+    p2_strategy = strategies.QStrategy('q2.pkl')
+    p1 = player.Player('X', p1_strategy)
+    p2 = player.Player('O', p2_strategy)
+    board = tictactoe.Board()
+    game = rl_game.Game(p1, p2, board)
+    game.play_many(100)
+    p1.strategy.save_q()
+    p2.strategy.save_q()
+    
+
 if __name__ == '__main__':
     print('Welcome to tic tac toe!\n')
     print('These are your options: \n')
@@ -59,6 +74,7 @@ if __name__ == '__main__':
     print('3: Play a 2-player game\n')
     print('4: Play against random bot as player 1\n')
     print('5: Play against a random bot as player 2\n')
+    print('6: Train the Q-learning agent\n')
     choice = input('Enter your choice: ')
     if not choice.isdigit():
         print('Enter a number next time')
@@ -73,6 +89,8 @@ if __name__ == '__main__':
         human_v_random(1)
     elif choice == 5:
         human_v_random(2)
+    elif choice == 6:
+        train_q()
     else:
         print('Enter a valid choice next time')
         

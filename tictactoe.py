@@ -83,6 +83,16 @@ class Board:
         """
         self.board[(pos - 1) // 3][(pos - 1) % 3] = val
 
+    def reset_board(self):
+        """
+        Resets the board to initial state
+        """
+        self.board = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+            ]
+
 def two_player():
     b = Board()
     print('Welcome to tic tac toe!\nTo make a move, enter the number of the square which you would like to play, labelled as:\n1, 2, 3\n4, 5, 6\n7, 8, 9')
