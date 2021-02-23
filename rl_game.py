@@ -42,18 +42,22 @@ class Game:
         if result == 1:
             self.player1.reward(win_reward)
             self.player2.reward(lose_reward)
+            self.player1_wins += 1
             if display:
                 print('Player 1 wins')
         elif result == 2:
             self.player2.reward(win_reward)
             self.player1.reward(lose_reward)
+            self.player2_wins += 1
             if display:
                 print('Player 2 wins')
         else:
             self.player1.reward(draw_reward)
             self.player2.reward(draw_reward)
+            self.draws += 1
             if display:
                 print('Draw')
+        
                 
     def play_many(self, number):
         """
@@ -64,4 +68,7 @@ class Game:
             self.board.reset_board()
         self.player1.reset_history()
         self.player2.reset_history()
+        print('Player 1 wins', self.player1_wins)
+        print('Player 2 wins', self.player2_wins)
+        print('Draws', self.draws)
 

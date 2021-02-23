@@ -51,7 +51,7 @@ def q_v_q():
     p1.strategy.save_q()
     p2.strategy.save_q()
 
-def train_q():
+def train_q(n=1000):
     """
     Trains the RL agent
     """
@@ -61,10 +61,57 @@ def train_q():
     p2 = player.Player('O', p2_strategy)
     board = tictactoe.Board()
     game = rl_game.Game(p1, p2, board)
-    game.play_many(100)
+    game.play_many(n)
     p1.strategy.save_q()
     p2.strategy.save_q()
-    
+
+def q_v_random(n=1000):
+    """
+    Trains the RL agent
+    """
+    p1_strategy = strategies.QStrategy('q1.pkl')
+    p2_strategy = strategies.RandomStrategy()
+    p1 = player.Player('X', p1_strategy)
+    p2 = player.Player('O', p2_strategy)
+    board = tictactoe.Board()
+    game = rl_game.Game(p1, p2, board)
+    game.play_many(n)
+    p1.strategy.save_q()
+
+def random_v_q(n=1000):
+    """
+    Trains the RL agent against random
+    """
+    p1_strategy = strategies.RandomStrategy()
+    p2_strategy = strategies.QStrategy('q2.pkl')
+    p1 = player.Player('X', p1_strategy)
+    p2 = player.Player('O', p2_strategy)
+    board = tictactoe.Board()
+    game = rl_game.Game(p1, p2, board)
+    game.play_many(n)
+    p2.strategy.save_q()
+
+def human_v_q(human_player=1):
+    """
+    Allows human to play versus q-learning agent
+    """
+    if human_player == 1:
+        p1_strategy = strategies.Human()
+        p2_strategy = strategies.QStrategy('q2.pkl')
+    else:
+        human_player = 2
+        p2_strategy = strategies.Human()
+        p1_strategy = strategies.QStrategy('q1.pkl')
+    p1 = player.Player('X', p1_strategy)
+    p2 = player.Player('O', p2_strategy)
+    board = tictactoe.Board()
+    message = 'Welcome to tic tac toe!\n'+\
+    'You are playing against a random opponent and you are player '+str(human_player)+'.\n'+\
+    'To make a move, enter the number of the square which you would like to play, labelled as:\n'+\
+    '1, 2, 3\n4, 5, 6\n7, 8, 9\n\n'
+    print(message)
+    game = rl_game.Game(p1, p2, board)
+    game.play_one()
 
 if __name__ == '__main__':
     print('Welcome to tic tac toe!\n')
@@ -75,6 +122,10 @@ if __name__ == '__main__':
     print('4: Play against random bot as player 1\n')
     print('5: Play against a random bot as player 2\n')
     print('6: Train the Q-learning agent\n')
+    print('7: Q-learning vs. against random\n')
+    print('8: Random vs. Q-learning\n')
+    print('9: Play against Q-learning agent as player 1\n')
+    print('10: Play against Q-learning agent as player 2\n')
     choice = input('Enter your choice: ')
     if not choice.isdigit():
         print('Enter a number next time')
@@ -90,7 +141,15 @@ if __name__ == '__main__':
     elif choice == 5:
         human_v_random(2)
     elif choice == 6:
-        train_q()
+        train_q(10000)
+    elif choice == 7:
+        q_v_random(1000)
+    elif choice == 8:
+        random_v_q(1000)
+    elif choice == 9:
+        human_v_q(1)
+    elif choice == 10:
+        human_v_q(2)
     else:
         print('Enter a valid choice next time')
         
