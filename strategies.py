@@ -98,7 +98,6 @@ class QStrategy(Strategy):
 
     def select_move(self, moves, board, symbol):
         # Get the state and set the X and O appropriately for the player
-        #print(moves)
         state = board.get_state()
         if symbol == 'O':
                 # Interchange X and O in state since Q-table assumes player plays X
@@ -119,10 +118,8 @@ class QStrategy(Strategy):
             else:
                 # Has not been experienced before, so pick random
                 move = random.choice(moves)
-            move = moves[0] # Remove after has been implemented
         # Place the state and action in history:
         self.history[state] = move
-        #print(self.history)
         return move
 
     def reward(self, reward_val):
