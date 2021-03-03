@@ -66,8 +66,8 @@ class Game:
         for i in range(number):
             self.play_one(display=False)
             self.board.reset_board()
-        self.player1.reset_history()
-        self.player2.reset_history()
+            self.player1.reset_history()
+            self.player2.reset_history()
         print('Player 1 wins', self.player1_wins)
         print('Player 2 wins', self.player2_wins)
         print('Draws', self.draws)
