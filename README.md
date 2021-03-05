@@ -22,11 +22,7 @@ During training, the Q-agent randomly chooses whether to explore or exploit (exp
 After each game during training, the agent will updates its Q-values according to the reward values given in `params.py`. If it won, it will increase the Q-values associated with its chosen moves and if it lost, it will decrease them. If the result is a draw, it makes sense to give a small reward.
 
 Update of the $q$ function for state-action pair $(s,a)$ is given by
-$$
-q(s,a) \leftarrow (1-\alpha) q(s,a) + \alpha (R + \gamma \max_{a'}q(s',a'))
-$$
-
-<img src="https://render.githubusercontent.com/render/math?math=q(s%2Ca)%20leftarrow%20(1-alpha)%20q(s%2Ca)%20%2B%20alpha%20(R%20%2B%20gamma%20max_%7Ba%7Dq(s%2Ca))">
+<img src="https://render.githubusercontent.com/render/math?math=q(s,a)\leftarrow(1-\alpha)q(s,a)%2B\alpha(R%2B\gamma%20%20\max_{a%27}q(s%27,a%27))">
 
 Here, $\alpha$ is the learning rate, $R$ the reward value and $\gamma$ the discount factor. This last term is there to favour moves which result in future advantage. It is calculated by looking for the maximum Q-value possible in the next move (since there are two players, it makes the best move for the opponent and then looks what its best Q-value can be in the next move).
 
