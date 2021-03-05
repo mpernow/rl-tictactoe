@@ -125,28 +125,35 @@ class QStrategy(Strategy):
         """
         Updates the q-values based on the outcome of a game
         """
-        # Remember the offset of moves array!
+        # Loop over each state from this game and update q-value
         for state in self.history:
+            # Offset moves array!
             action = self.history[state] - 1
             if state in self.q:
                 old_q = self.q[state][action]
-                #print('old: ',self.q[state][action])
             else:
                 old_q = 0.
                 self.q[state] = [0 for i in range(9)]
             next_state = state[:action] + self.symbol + state[action+1:]
+            # Discounted future reward: Choose opponent's best move, then look at my q-values after that
             if next_state in self.q:
                 # Possible moves:
                 next_moves = [i for i, x in enumerate(next_state) if x == ' ']
-                next_q = max([self.q[next_state][i] for i in next_moves])
+                qs_allowed = [self.q[next_state][i] for i in next_moves]                            
+                best_moves = [i for i, x in enumerate(qs_allowed) if x == max(qs_allowed)]
+                next_move = next_moves[random.choice(best_moves)] # wnat index, not place on board
+                other_symb = 'O' if self.symbol=='X' else 'X'
+                nextnext_state = next_state[:next_move] + other_symb + next_state[action+1:]
+                if nextnext_state in self.q:
+                    next_q = max([self.q[nextnext_state][i] for i in next_moves])
+                else:
+                    next_q = 0.
             else:
                 next_q = 0.
-            #print('next: ',next_q)
             self.q[state][action] = (1. - params.learning_rate)*old_q + \
               params.learning_rate * (reward_val + params.discount_factor * next_q)
             # Keep track of which ones have changed:
             self.new_q[state] = self.q[state]
-            #print('New: ',self.q[state][action])
         self.n += 1
         self.q['n'] = self.n
 

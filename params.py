@@ -1,5 +1,5 @@
-win_reward = 1.
-lose_reward = -1.
+win_reward = 10.
+lose_reward = -10.
 draw_reward = 0.1
 
 learning_rate = 0.5
