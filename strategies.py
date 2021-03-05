@@ -136,7 +136,7 @@ class QStrategy(Strategy):
                 self.q[state] = [0 for i in range(9)]
             next_state = state[:action] + self.symbol + state[action+1:]
             # Discounted future reward: Choose opponent's best move, then look at my q-values after that
-            if next_state in self.q:
+            if (next_state in self.q) and (next_state.count(' ')>=2): # Only if I will move again
                 # Possible moves:
                 next_moves = [i for i, x in enumerate(next_state) if x == ' ']
                 qs_allowed = [self.q[next_state][i] for i in next_moves]                            
