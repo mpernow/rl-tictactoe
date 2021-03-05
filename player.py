@@ -4,7 +4,7 @@ class Player:
         self.strategy = strategy
 
     def move(self, moves, board):
-        return self.strategy.select_move(moves, board, self.symbol)
+        return self.strategy.select_move(moves, board)
 
     def reward(self, reward_value):
         self.strategy.reward(reward_value)

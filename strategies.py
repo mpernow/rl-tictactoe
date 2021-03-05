@@ -12,7 +12,7 @@ class Strategy:
     def __init__(self, type):
         self.type = type
 
-    def select_move(self, moves, board, symbol):
+    def select_move(self, moves, board):
         """
         Selects a move from list
         """
@@ -21,8 +21,7 @@ class RandomStrategy(Strategy):
     def __init__(self):
         Strategy.__init__(self, "random")
 
-    def select_move(self, moves, board, symbol):
-        # symbol included only for compatibility
+    def select_move(self, moves, board):
         return random.choice(moves)
 
     def reward(self, reward_value):
@@ -41,8 +40,7 @@ class Human(Strategy):
     def __init__(self):
         Strategy.__init__(self, "human")
 
-    def select_move(self, moves, board, symbol):
-        # symbol included only for compatibility
+    def select_move(self, moves, board):
         move = input('Enter a square: ')
         try:
             move = int(move)
@@ -71,7 +69,7 @@ class Human(Strategy):
 
 
 class QStrategy(Strategy):
-    def __init__(self, f_name=params.f_name):
+    def __init__(self, symbol, f_name=params.f_name):
         Strategy.__init__(self, "q-strategy")
         self.learning_rate = params.learning_rate
         self.discount_factor = params.discount_factor
@@ -94,14 +92,15 @@ class QStrategy(Strategy):
             self.n = 0
         self.exploration_rate = params.eps_min + \
           (params.eps_max - params.eps_min)*math.exp(-params.tau * self.n)
+        # Keep track of history of states, actions in game to update q-table
         self.history = {}
+        # Keep track of the updated entries of q-table to be saved
+        self.new_q = {}
+        # For reading and updating q-table, need to know symbol:
+        self.symbol = symbol
 
-    def select_move(self, moves, board, symbol):
-        # Get the state and set the X and O appropriately for the player
+    def select_move(self, moves, board):
         state = board.get_state()
-        if symbol == 'O':
-                # Interchange X and O in state since Q-table assumes player plays X
-                state = state.replace('X', '_').replace('O','X').replace('_','O')
         r = random.random()
         if r < self.exploration_rate:
             # Explore!
@@ -131,16 +130,23 @@ class QStrategy(Strategy):
             action = self.history[state] - 1
             if state in self.q:
                 old_q = self.q[state][action]
+                #print('old: ',self.q[state][action])
             else:
                 old_q = 0.
                 self.q[state] = [0 for i in range(9)]
-            next_state = state[:action]+'X'+state[action+1:]
+            next_state = state[:action] + self.symbol + state[action+1:]
             if next_state in self.q:
-                next_q = max(self.q[next_state])
+                # Possible moves:
+                next_moves = [i for i, x in enumerate(next_state) if x == ' ']
+                next_q = max([self.q[next_state][i] for i in next_moves])
             else:
                 next_q = 0.
+            #print('next: ',next_q)
             self.q[state][action] = (1. - params.learning_rate)*old_q + \
               params.learning_rate * (reward_val + params.discount_factor * next_q)
+            # Keep track of which ones have changed:
+            self.new_q[state] = self.q[state]
+            #print('New: ',self.q[state][action])
         self.n += 1
         self.q['n'] = self.n
 
@@ -150,7 +156,21 @@ class QStrategy(Strategy):
     def save_q(self):
         """
         Saves the q function table using pickle
+        To avoid conflict with other player having saved their moves since we last loaded,
+        we reload it, update only our updated actions (these have no overlap between players),
+        and save that q-table.
         """
+        try:
+            f = open(self.f_name, 'rb')
+            loaded_q = pickle.load(f)
+            f.close()
+        except (FileNotFoundError, EOFError):
+            loaded_q = {}
+        for state in self.new_q:
+            loaded_q[state] = self.new_q[state]
+            loaded_q['n'] = self.n
         f = open(self.f_name, 'wb')
-        pickle.dump(self.q, f)
+        pickle.dump(loaded_q, f)
         f.close()
+        # Finally, clear the history:
+        self.new_q = {}

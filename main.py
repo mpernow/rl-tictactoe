@@ -41,8 +41,8 @@ def q_v_q():
     """
     Plays two Q-strategy players against each other
     """
-    p1_strategy = strategies.QStrategy('q1.pkl')
-    p2_strategy = strategies.QStrategy('q2.pkl')
+    p1_strategy = strategies.QStrategy('X')
+    p2_strategy = strategies.QStrategy('O')
     p1 = player.Player('X', p1_strategy)
     p2 = player.Player('O', p2_strategy)
     board = tictactoe.Board()
@@ -56,8 +56,8 @@ def train_q(n=1000):
     Trains the RL agent
     """
     for i in range(50):
-        p1_strategy = strategies.QStrategy('q1.pkl')
-        p2_strategy = strategies.QStrategy('q2.pkl')
+        p1_strategy = strategies.QStrategy('X')
+        p2_strategy = strategies.QStrategy('O')
         p1 = player.Player('X', p1_strategy)
         p2 = player.Player('O', p2_strategy)
         board = tictactoe.Board()
@@ -71,7 +71,7 @@ def q_v_random(n=1000):
     Trains the RL agent
     """
     for i in range(5):
-        p1_strategy = strategies.QStrategy('q1.pkl')
+        p1_strategy = strategies.QStrategy('X')
         p2_strategy = strategies.RandomStrategy()
         p1 = player.Player('X', p1_strategy)
         p2 = player.Player('O', p2_strategy)
@@ -87,7 +87,7 @@ def random_v_q(n=1000):
     """
     for i in range(5):
         p1_strategy = strategies.RandomStrategy()
-        p2_strategy = strategies.QStrategy('q2.pkl')
+        p2_strategy = strategies.QStrategy('O')
         p1 = player.Player('X', p1_strategy)
         p2 = player.Player('O', p2_strategy)
         board = tictactoe.Board()
@@ -102,11 +102,11 @@ def human_v_q(human_player=1):
     """
     if human_player == 1:
         p1_strategy = strategies.Human()
-        p2_strategy = strategies.QStrategy('q2.pkl')
+        p2_strategy = strategies.QStrategy('O')
     else:
         human_player = 2
+        p1_strategy = strategies.QStrategy('X')
         p2_strategy = strategies.Human()
-        p1_strategy = strategies.QStrategy('q1.pkl')
     p1 = player.Player('X', p1_strategy)
     p2 = player.Player('O', p2_strategy)
     board = tictactoe.Board()
