@@ -73,7 +73,6 @@ class QStrategy(Strategy):
         Strategy.__init__(self, "q-strategy")
         self.learning_rate = params.learning_rate
         self.discount_factor = params.discount_factor
-        #self.exploration_rate = params.exploration_rate
         # Load pickled q table if exists and non-empty, otherwise make empty
         self.f_name = f_name
         try:
@@ -83,9 +82,6 @@ class QStrategy(Strategy):
         except (FileNotFoundError, EOFError):
             self.q = {}
         # self.q is dict of {state: [q-value for each action]}
-        # Note that in the q dict, it is assumed that the player plays X
-        # Exploration rate will have decay, depending on number of of played episodes,
-        # which is stored in q.pkl
         if 'n' in self.q:
             self.n = self.q['n']
         else:
@@ -141,9 +137,11 @@ class QStrategy(Strategy):
                 next_moves = [i for i, x in enumerate(next_state) if x == ' ']
                 qs_allowed = [self.q[next_state][i] for i in next_moves]                            
                 best_moves = [i for i, x in enumerate(qs_allowed) if x == max(qs_allowed)]
-                next_move = next_moves[random.choice(best_moves)] # wnat index, not place on board
+                next_move = next_moves[random.choice(best_moves)] # want index, not place on board
+                # Make best move for opponent
                 other_symb = 'O' if self.symbol=='X' else 'X'
                 nextnext_state = next_state[:next_move] + other_symb + next_state[action+1:]
+                # Best q-value for next move:
                 if nextnext_state in self.q:
                     next_q = max([self.q[nextnext_state][i] for i in next_moves])
                 else:
