@@ -122,38 +122,38 @@ if __name__ == '__main__':
     print('Welcome to tic tac toe!\n')
     print('These are your options: \n')
     print('1: View a Q vs. Q game\n')
-    print('2: View a random vs. random game\n')
-    print('3: Play a 2-player game\n')
-    print('4: Play against random bot as player 1\n')
-    print('5: Play against a random bot as player 2\n')
-    print('6: Train the Q-learning agent\n')
-    print('7: Q-learning vs. random\n')
-    print('8: Random vs. Q-learning\n')
-    print('9: Play against Q-learning agent as player 1\n')
-    print('10: Play against Q-learning agent as player 2\n')
+    #print('2: View a random vs. random game\n')
+    print('2: Play a 2-player game\n')
+    #print('4: Play against random bot as player 1\n')
+    #print('5: Play against a random bot as player 2\n')
+    print('3: Train the Q-learning agent\n')
+    print('4: Q-learning vs. random\n')
+    print('5: Random vs. Q-learning\n')
+    print('6: Play against Q-learning agent as player 1\n')
+    print('7: Play against Q-learning agent as player 2\n')
     choice = input('Enter your choice: ')
     if not choice.isdigit():
         print('Enter a number next time')
     choice = int(choice)
     if choice == 1:
         q_v_q()
+    #elif choice == 2:
+    #    random_v_random()
     elif choice == 2:
-        random_v_random()
-    elif choice == 3:
         tictactoe.two_player()
-    elif choice == 4:
-        human_v_random(1)
-    elif choice == 5:
-        human_v_random(2)
-    elif choice == 6:
+    #elif choice == 4:
+    #    human_v_random(1)
+    #elif choice == 5:
+    #    human_v_random(2)
+    elif choice == 3:
         train_q(1000)
-    elif choice == 7:
+    elif choice == 4:
         q_v_random(1000)
-    elif choice == 8:
+    elif choice == 5:
         random_v_q(1000)
-    elif choice == 9:
+    elif choice == 6:
         human_v_q(1)
-    elif choice == 10:
+    elif choice == 7:
         human_v_q(2)
     else:
         print('Enter a valid choice next time')
